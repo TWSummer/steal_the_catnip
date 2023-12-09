@@ -4,6 +4,9 @@ class Game < ApplicationRecord
     validates :round_length, numericality: { greater_than: 0 }
     validates :squad_size, numericality: { greater_than: 0, less_than: 7 }
 
+    has_many :game_players
+    has_many :players, through: :game_players
+
     after_initialize do
         next if room_code
 
