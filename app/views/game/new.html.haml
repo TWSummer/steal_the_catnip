@@ -11,21 +11,21 @@
             %label Number of Players
             .field
                 .ui.radio.checkbox
-                    %input(type='radio' name='players')
+                    %input(type='radio' name='players' value='one')
                     %label One
             .field
                 .ui.radio.checkbox
-                    %input(type='radio' name='players')
+                    %input(type='radio' name='players' value='two')
                     %label Two
         .field(style='max-width: 400px;')
             .ui.right.labeled.input
                 %label.ui.label(for='round_length') Round Length
-                %input(type='text' placeholder='90' id='round_length' value='90')
+                %input(type='text' placeholder='90' name='round_length' value='90')
                 .ui.basic.label Seconds
         .field(style='max-width: 400px;')
             .ui.right.labeled.input
                 %label.ui.label(for='squad_size') Squad Size
-                %input(type='text' placeholder='3' id='squad_size' value='3')
+                %input(type='text' placeholder='3' name='squad_size' value='3')
                 .ui.basic.label Cats
         %button.ui.button#create-game Create Game
 
@@ -73,7 +73,16 @@
             $.ajax({
                 method: 'POST',
                 url: $form.attr('action'),
-                data: {}
+                data: fields,
+                dataType: 'json',
+                success: function(response) {
+                    if(response.success) {
+                        window.location = response.lobby;
+                    } else {
+                        $form.removeClass('loading');
+                        $form.form('add errors', response.errors || [response.message]);
+                    }
+                }
             });
         }
     });

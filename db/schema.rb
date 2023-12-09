@@ -23,6 +23,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_08_032802) do
 
   create_table "games", force: :cascade do |t|
     t.string "room_code", null: false
+    t.boolean "single_player", null: false
+    t.integer "squad_size", null: false
+    t.integer "round_length", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["room_code"], name: "index_games_on_room_code", unique: true
