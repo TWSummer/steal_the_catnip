@@ -1,0 +1,79 @@
+.ui.container
+    %form.ui.form(action="#{create_game_path}")
+        %h4.ui.dividing.header New Game
+        .field
+            .ui.error.message
+        .field(style='max-width: 400px;')
+            %label Choose a name
+            .ui.input
+                %input(type='text' name='player_name' placeholder='Pick a name' value="#{@player.name}")
+        .inline.fields
+            %label Number of Players
+            .field
+                .ui.radio.checkbox
+                    %input(type='radio' name='players')
+                    %label One
+            .field
+                .ui.radio.checkbox
+                    %input(type='radio' name='players')
+                    %label Two
+        .field(style='max-width: 400px;')
+            .ui.right.labeled.input
+                %label.ui.label(for='round_length') Round Length
+                %input(type='text' placeholder='90' id='round_length' value='90')
+                .ui.basic.label Seconds
+        .field(style='max-width: 400px;')
+            .ui.right.labeled.input
+                %label.ui.label(for='squad_size') Squad Size
+                %input(type='text' placeholder='3' id='squad_size' value='3')
+                .ui.basic.label Cats
+        %button.ui.button#create-game Create Game
+
+:javascript
+    $('.form').form({
+        revalidate: true,
+        fields: {
+            player_name: {
+                identifier: 'player_name',
+                rules: [{
+                    type: 'empty',
+                    prompt : 'Please enter your name'
+                }, {
+                    type: 'maxLength[30]',
+                    prompt: 'Your name cannot be longer than 30 characters'
+                }],
+            },
+            players: {
+                identifier: 'players',
+                rules: [{
+                    type: 'checked',
+                    prompt : 'Choose the number of players'
+                }]
+            },
+            round_length: {
+                identifier: 'round_length',
+                rules: [{
+                    type: 'integer[1..]',
+                    prompt: 'The round length should be a positive integer'
+                }]
+            },
+            squad_size: {
+                identifier: 'squad_size',
+                rules: [{
+                    type: 'integer[1..6]',
+                    prompt: 'Your squad size must be an integer between 1 and 6'
+                }]
+            }
+        },
+        onSuccess: function(e, fields) {
+            e.preventDefault();
+            $form = $('.form');
+            $form.addClass('loading');
+
+            $.ajax({
+                method: 'POST',
+                url: $form.attr('action'),
+                data: {}
+            });
+        }
+    });
