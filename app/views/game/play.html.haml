@@ -1,1 +1,56 @@
-Your game is ready
+:css
+    .ui.cards > .ui.selected.card {
+        box-shadow: 0 0 0 1px #d4d4d5, 0 2px 17px 0 rgba(34,150,38,.82), 0 2px 17px 0 rgba(34,36,38,.15)
+    }
+
+    .ui.selectable-card.card {
+        cursor: pointer;
+    }
+
+.ui.container
+    %h1.ui.centered.dividing.header Steal The Catnip
+    .ui.cards
+        .ui.centered.card(style='max-width: 100px; overflow-x: hidden; margin-top: -1px;')
+            .content
+                %h2.ui.centered.header#round-timer= @game.round_length
+    .ui.grid
+        .eight.wide.column
+            %h3.ui.dividing.header= "Choose #{@game.squad_size} cats for your squad"
+            .ui.three.cards
+                - @player_cats.each do |cat|
+                    .ui.card.selectable-card
+                        .content 
+                            .header= cat.name
+                            .description= cat.ability
+        .eight.wide.column
+            Right
+
+:javascript
+
+    setTimeout(updateTimer, 1000);
+
+    function updateTimer() {
+        let $roundTimer = $('#round-timer')
+        let previousTime = $roundTimer[0].innerHTML
+
+        if(previousTime < 17) {
+            $roundTimer.addClass('red');
+        }
+        
+        if(previousTime > 0) {
+            $roundTimer[0].innerHTML = previousTime - 1
+            setTimeout(updateTimer, 1000);
+        }
+        
+    }
+
+    $('.selectable-card').on('click', function(e) {
+        console.log(e);
+        console.log(e.target);
+        $card = $(e.target.closest('.card'));
+        if($card.hasClass('selected')) {
+            $card.removeClass('selected');
+        } else {
+            $card.addClass('selected');
+        }
+    });

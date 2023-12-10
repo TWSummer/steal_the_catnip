@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_09_191916) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_10_032002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_09_191916) do
     t.string "ability"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "side"
   end
 
   create_table "game_players", force: :cascade do |t|
@@ -30,6 +31,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_09_191916) do
     t.index ["user_id"], name: "index_game_players_on_user_id"
   end
 
+  create_table "game_rounds", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "location_id"
+    t.integer "round_number"
+    t.integer "thief_player_id"
+    t.integer "defender_player_id"
+    t.string "thief_plan"
+    t.string "defender_plan"
+    t.boolean "catnip_stolen"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["defender_player_id"], name: "index_game_rounds_on_defender_player_id"
+    t.index ["game_id"], name: "index_game_rounds_on_game_id"
+    t.index ["location_id"], name: "index_game_rounds_on_location_id"
+    t.index ["thief_player_id"], name: "index_game_rounds_on_thief_player_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.string "room_code", null: false
     t.boolean "single_player", null: false
@@ -38,6 +56,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_09_191916) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["room_code"], name: "index_games_on_room_code", unique: true
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "round_cats", force: :cascade do |t|
+    t.bigint "game_round_id"
+    t.bigint "cat_id"
+    t.string "side"
+    t.boolean "chosen"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cat_id"], name: "index_round_cats_on_cat_id"
+    t.index ["game_round_id"], name: "index_round_cats_on_game_round_id"
   end
 
   create_table "users", force: :cascade do |t|

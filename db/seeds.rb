@@ -5,3 +5,59 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+thief_cats = [
+    { name: 'Shadow Whisper', ability: 'This cat can move silently, becoming nearly invisible in low light, perfect for stealthy infiltrations.'},
+    { name: 'Gadget Paws', ability: 'An expert in technology, Gadget Paws can disable alarms and unlock electronic doors with ease.'},
+    { name: 'Whisker Twist', ability: 'With incredible agility, Whisker Twist can squeeze through the tiniest gaps and evade capture.'},
+    { name: 'Mystic Mew', ability: 'Possessing psychic abilities, Mystic Mew can foresee short-term future events, aiding in planning the perfect heist.'},
+    { name: 'Purrloin', ability: 'A master of disguise, Purrloin can mimic the appearance of other cats, confusing guards and bypassing security.'},
+    { name: 'Feline Flicker', ability: 'This cat can teleport short distances, bypassing obstacles and barriers effortlessly.'},
+    { name: 'Nimble Claw', ability: 'Known for exceptional climbing skills, Nimble Claw can scale walls and access high points easily.'},
+    { name: 'Blink Bandit', ability: 'With the power to briefly turn invisible, Blink Bandit can sneak past guards unseen.'},
+    { name: 'Echo Ears', ability: 'This cat can hear even the faintest sounds, detecting approaching threats or eavesdropping on conversations.'},
+    { name: 'Tangle Tail', ability: 'Specializing in traps, Tangle Tail can set up snares and traps to distract or capture guards.'},
+    { name: 'Sneak Slink', ability: 'With extraordinary balance and grace, Sneak Slink can navigate perilous paths without making a sound.'},
+    { name: 'Hacker Hiss', ability: 'An expert in cybersecurity, Hacker Hiss can hack into security systems and manipulate data.'},
+    { name: 'Mystique Meow', ability: 'Capable of hypnotizing others with its gaze, Mystique Meow can control minds temporarily.'},
+    { name: 'Quick Quiver', ability: 'Known for exceptional speed, Quick Quiver can outrun any pursuer and snatch objects in a blink.'},
+    { name: 'Frost Fur', ability: 'This cat can lower temperatures, freezing locks or creating slippery surfaces to hinder pursuers.'},
+    { name: 'Charm Chaser', ability: 'Using irresistible charm, Charm Chaser can persuade others to help in the heist or turn a blind eye.'},
+    { name: 'Shadow Swipe', ability: 'A master pickpocket, Shadow Swipe can steal keys, cards, or other small items without detection.'},
+    { name: 'Vortex Velvet', ability: 'This cat can create small whirlwinds, disorienting guards and clearing pathways.'},
+    { name: 'Spectral Sway', ability: 'With the ability to walk through walls, Spectral Sway can bypass physical barriers effortlessly.'},
+    { name: 'Ink Illusion', ability: 'Specializing in creating illusions, Ink Illusion can project fake images to distract and deceive guards.'},
+]
+
+thief_cats.each do |cat_info|
+    cat = Cat.find_or_initialize_by(name: cat_info[:name])
+    cat.update(side: 'thief', ability: cat_info[:ability])
+end
+
+defender_cats = [
+    { name: 'Sergeant Sniffer', ability: 'This cat has an exceptional sense of smell, able to detect even the faintest trace of intruders.' },
+    { name: 'Inspector Whiskers', ability: 'Equipped with a hypersensitive hearing ability, Sergeant Sniffer can detect the slightest sound of a trespasser.' },
+    { name: 'Guardian Gaze', ability: 'With keen eyesight, Guardian Gaze can spot suspicious activities from great distances.' },
+    { name: 'Detective Dash', ability: 'Known for incredible speed and reflexes, Detective Dash can quickly respond to any security breach.' },
+    { name: 'Lieutenant Hobbes', ability: 'This cat can analyze and interpret patterns, predicting criminals\' next moves with high accuracy.' },
+    { name: 'Captain Clever', ability: 'An expert in strategy, Captain Clever can outmaneuver and outthink criminal minds.' },
+    { name: 'Sentry Sparkle', ability: 'Possessing a photographic memory, Sentry Sparkle can remember every detail and spot discrepancies instantly.' },
+    { name: 'Ranger Ripple', ability: 'Specialized in tracking, Ranger Ripple can follow trails left by intruders effortlessly.' },
+    { name: 'Scout Shadow', ability: 'With the ability to blend into surroundings, Scout Shadow can surveil without being detected.' },
+    { name: 'Vigilant Velvet', ability: 'This cat has a sixth sense for danger, sensing threats before they materialize.' },
+    { name: 'Marshal Muzzle', ability: 'An expert in communications, Marshal Muzzle can coordinate complex security operations and team responses.' },
+    { name: 'Paladin Pounce', ability: 'Skilled in physical confrontations, Paladin Pounce can apprehend any intruder with agility and strength.' },
+    { name: 'Oracle Ogle', ability: 'Possessing precognitive glimpses, Oracle Ogle can foresee criminal acts before they happen.' },
+    { name: 'Tracker Tumble', ability: 'Specializing in urban environments, Tracker Tumble can navigate complex landscapes to follow suspects.' },
+    { name: 'Enforcer Echo', ability: 'With the ability to mimic any sound, Enforcer Echo can create diversions or call for reinforcements.' },
+    { name: 'Sentinel Swoop', ability: 'Known for aerial surveillance skills, Sentinel Swoop can observe large areas from above.' },
+    { name: 'Warden Whirl', ability: 'This cat can create barriers and control access points, securing critical areas against intrusion.' },
+    { name: 'Knight Knack', ability: 'Equipped with exceptional problem-solving skills, Knight Knack can quickly devise countermeasures against criminal tactics.' },
+    { name: 'Mystic Mirror', ability: 'Capable of reflecting or revealing invisible or disguised intruders, Mystic Mirror is invaluable in uncovering hidden threats.' },
+    { name: 'Gale Guard', ability: 'With the ability to control wind currents, Gale Guard can manipulate the environment to hinder or expose criminals.' },
+]
+
+defender_cats.each do |cat_info|
+    cat = Cat.find_or_initialize_by(name: cat_info[:name])
+    cat.update(side: 'defend', ability: cat_info[:ability])
+end

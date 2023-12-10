@@ -45,7 +45,10 @@ class GameController < ApplicationController
     end
 
     def play
-
+        @player = current_user
+        @game = Game.find_by(room_code: params[:room_code])
+        @round = @game.current_round
+        @player_cats = @round.cats_available_to_player(@player)
     end
 
     def join
