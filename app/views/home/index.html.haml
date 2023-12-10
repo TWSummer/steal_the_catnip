@@ -1,5 +1,70 @@
 .ui.container
     .ui.sizer.vertical.segment 
         .ui.huge.header Steal The Catnip
-    %button.ui.right.floated.button Join Game
-    %button.ui.right.floated.button New Game
+    %button.ui.right.floated.button#join-button Join Game
+    %a.ui.right.floated.button(href="#{new_game_path}") New Game
+    .ui.modal(style='padding: 28px;')
+        %i.close.icon
+        %h2.ui.centered.dividing.header Join Room
+        %form.ui.form(action="#{join_game_path}")
+            .field
+                .ui.error.message
+            .field(style='max-width: 400px; margin-top: 35px;')
+                .ui.labeled.input
+                    %label.ui.label(for='player_name') Your Name
+                    %input(type='text' name='player_name' placeholder='Choose something fun!' value="#{@player.name}")
+            .field(style='max-width: 400px; margin-top: 35px;')
+                .ui.labeled.input
+                    %label.ui.label(for='room_code') Room Code
+                    %input(type='text' name='room_code' placeholder='ABC123')
+            %button.ui.primary.button Join
+
+
+:javascript
+
+    $('#join-button').click(() => {
+        $('.ui.modal').modal('show');
+    });
+
+    $('.form').form({
+        revalidate: true,
+        fields: {
+            player_name: {
+                identifier: 'player_name',
+                rules: [{
+                    type: 'empty',
+                    prompt : 'Please enter your name'
+                }, {
+                    type: 'maxLength[30]',
+                    prompt: 'Your name cannot be longer than 30 characters'
+                }],
+            },
+            room_code: {
+                identifier: 'room_code',
+                rules: [{
+                    type: 'empty',
+                    prompt : 'Enter a room code. The person that created the game should have this. If you don\'t have one yet then exit this modal and click "New Game"'
+                }]
+            }
+        },
+        onSuccess: function(e, fields) {
+            e.preventDefault();
+            $form = $('.form');
+            $form.addClass('loading');
+
+            $.ajax({
+                method: 'POST',
+                url: $form.attr('action'),
+                data: fields,
+                dataType: 'json',
+                success: function(response) {
+                    if(response.success) {
+                        window.location = response.location;
+                    } else {
+                        $form.removeClass('loading');
+                        $form.form('add errors', response.errors || [response.message]);
+                    }
+                }
+            });
+        }
+    });

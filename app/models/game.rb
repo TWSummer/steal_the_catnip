@@ -17,4 +17,10 @@ class Game < ApplicationRecord
 
         self.room_code = code
     end
+
+    def has_all_players?
+        expected_players = single_player ? 1 : 2
+
+        players.count == expected_players
+    end
 end

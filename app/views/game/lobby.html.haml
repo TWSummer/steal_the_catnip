@@ -1,1 +1,29 @@
-Welcome to the lobby
+.ui.container
+    %h1.ui.centered.dividing.header Lobby
+    %h3.ui.centered.header Waiting for other player to join
+    %h4.ui.centered.red.header= "Room Code: #{@game.room_code.upcase}"
+    %form.ui.form
+        .field
+            .ui.error.message
+
+:javascript
+    setTimeout(checkIfReady, 3000);
+
+    function checkIfReady() {
+        $.ajax({
+            method: 'GET',
+            url: "#{check_if_game_ready_path(@game.room_code)}",
+            success: function(response) {
+                if(response.success) {
+                    if(response.ready) {
+                        window.location = response.location;
+                    } else {
+                        console.log("Not ready yet");
+                        setTimeout(checkIfReady, 3000);
+                    }
+                } else {
+                    $('.form').form('add errors', response.errors || [response.message]);
+                }
+            }
+        })
+    }

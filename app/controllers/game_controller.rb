@@ -31,6 +31,37 @@ class GameController < ApplicationController
 
     def lobby
         @game = Game.find_by(room_code: params[:room_code])
+    end
 
+    def ready
+        game = Game.find_by(room_code: params[:room_code])
+        render json: { success: false, message: 'Unable to locate a game with that room code' } and return unless game
+
+        if game.has_all_players?
+            render json: { success: true, ready: true, location: play_game_path(game.room_code) } and return
+        else
+            render json: { success: true, ready: false } and return
+        end
+    end
+
+    def play
+
+    end
+
+    def join
+        name = params[:player_name]
+        render json: { success: false, message: 'Please provide your name' } and return unless name
+
+        current_user.update(name: params[:player_name])
+
+        game = Game.find_by(room_code: params[:room_code]&.downcase)
+        render json: { success: false, message: 'Unable to locate a game with that room code' } and return unless game
+
+        render json: { success: true, location: play_game_path(game.room_code) } and return if game.players.include?(current_user)
+
+        render json: { success: false, message: 'All players have already joined this game' } and return if game.has_all_players?
+
+        game.players << current_user
+        render json: { success: true, location: play_game_path(game.room_code) }
     end
 end

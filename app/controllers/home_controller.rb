@@ -1,6 +1,5 @@
 class HomeController < ApplicationController
     def index
-        puts "Sasquatch"
-        p current_user
+        @player = current_user
     end
 end
