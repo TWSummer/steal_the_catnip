@@ -35,10 +35,7 @@ class Game < ApplicationRecord
         round = game_rounds.create!({
             thief:,
             defender:,
-            location: Location.limit(1).order("RANDOM()").first,
             round_number: 1,
         })
-
-        round.draw_cats!
     end
 end

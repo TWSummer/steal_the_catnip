@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   post 'game/lobby', to: 'game#join', as: 'join_game'
   get 'game/:room_code/ready', to: 'game#ready', as: 'check_if_game_ready'
   get 'game/:room_code/play', to: 'game#play', as: 'play_game'
+  post 'game/:room_code/round/:round_number', to: 'round#submit', as: 'submit_plan'
 end

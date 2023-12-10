@@ -8,22 +8,36 @@
     }
 
 .ui.container
-    %h1.ui.centered.dividing.header Steal The Catnip
+    %h1.ui.centered.dividing.header= "#{@round.player_role(@player) == 'thief' ? 'Steal' : 'Defend'} The Catnip"
     .ui.cards
-        .ui.centered.card(style='max-width: 100px; overflow-x: hidden; margin-top: -1px;')
+        .ui.centered.card(style='max-width: 100px; overflow-x: hidden; margin-top: -2px; box-shadow: none; border: 1px solid #d4d4d5; border-top: 1px solid white;')
             .content
                 %h2.ui.centered.header#round-timer= @game.round_length
-    .ui.grid
-        .eight.wide.column
-            %h3.ui.dividing.header= "Choose #{@game.squad_size} cats for your squad"
-            .ui.three.cards
-                - @player_cats.each do |cat|
-                    .ui.card.selectable-card
+    %form.ui.form(action="#{submit_plan_path(@game.room_code, @round.round_number)}")
+        .field
+            .ui.error.message
+        .ui.grid
+            .ten.wide.column
+                %h3.ui.dividing.header= "Choose #{@game.squad_size} cats for your squad"
+                .ui.three.cards
+                    - @player_cats.each do |cat|
+                        .ui.card.selectable-card(data-value="#{cat.id}")
+                            .content 
+                                .header= cat.name
+                                .description= cat.ability
+            .six.wide.column
+                %h3.ui.dividing.header Location
+                .ui.cards
+                    .ui.card
                         .content 
-                            .header= cat.name
-                            .description= cat.ability
-        .eight.wide.column
-            Right
+                            .header= @location.name
+                            .description= @location.description
+                %br
+                .field
+                    %label Squad Plan
+                    %textarea(rows='6' name='plan' placeholder="Enter your plan for how your squad will #{@round.player_role(@player) == 'thief' ? 'steal' : 'defend'} the catnip")
+            .sixteen.wide.column
+                %button.ui.fluid.button Ready
 
 :javascript
 
@@ -45,12 +59,58 @@
     }
 
     $('.selectable-card').on('click', function(e) {
-        console.log(e);
-        console.log(e.target);
         $card = $(e.target.closest('.card'));
         if($card.hasClass('selected')) {
             $card.removeClass('selected');
         } else {
             $card.addClass('selected');
+        }
+    });
+
+    $('.form').form({
+        revalidate: true,
+        fields: {
+            plan: {
+                identifier: 'plan',
+                rules: [{
+                    type: 'empty',
+                    prompt : 'You need to come up with a plan for your squad'
+                }, {
+                    type: 'maxLength[600]',
+                    prompt: 'Your plan cannot be longer than 600 characters'
+                }],
+            },
+        },
+        onSuccess: function(e, fields) {
+            e.preventDefault();
+            $form = $('.form');
+
+            let selectedCats = [];
+            $('.selectable-card.selected').each(function() {
+                selectedCats.push($(this).data('value'))
+            });
+
+            if(selectedCats.length != "#{@game.squad_size}") {
+                return $form.form('add errors', ["You must select exactly #{@game.squad_size} cats for your squad"]);
+            }
+
+            $form.addClass('loading');
+            let data = fields;
+            data['selected_cats'] = selectedCats;
+
+            $.ajax({
+                method: 'POST',
+                url: $form.attr('action'),
+                data: data,
+                dataType: 'json',
+                success: function(response) {
+                    if(response.success) {
+                        window.location = response.lobby;
+                    } else {
+                        $form.removeClass('loading');
+                        $form.form('add errors', response.errors || [response.message]);
+                    }
+                }
+            });
         }
     });

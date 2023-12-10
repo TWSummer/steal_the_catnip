@@ -16,6 +16,7 @@ class GameController < ApplicationController
         game = Game.new(game_params)
         game.players << current_user
         game.save
+        game.start! if is_single_player
 
         if game.persisted?
             if is_single_player
@@ -48,6 +49,7 @@ class GameController < ApplicationController
         @player = current_user
         @game = Game.find_by(room_code: params[:room_code])
         @round = @game.current_round
+        @location = @round.location
         @player_cats = @round.cats_available_to_player(@player)
     end
 
@@ -65,6 +67,7 @@ class GameController < ApplicationController
         render json: { success: false, message: 'All players have already joined this game' } and return if game.has_all_players?
 
         game.players << current_user
+        game.start!
         render json: { success: true, location: play_game_path(game.room_code) }
     end
 end
