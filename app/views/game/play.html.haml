@@ -105,7 +105,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if(response.success) {
-                        window.location = response.lobby;
+                        window.location = response.location;
                     } else {
                         $form.removeClass('loading');
                         $form.form('add errors', response.errors || [response.message]);

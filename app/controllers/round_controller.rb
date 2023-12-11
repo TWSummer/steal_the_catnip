@@ -16,11 +16,30 @@ class RoundController < ApplicationController
 
         chosen_round_cats.update_all(chosen: true)
         round.round_cats_available_to_player(current_user).where(chosen: nil).update_all(chosen: false)
+
         round.add_plan_for_player(current_user, params[:plan])
-
-        round.calculate_result! if round.all_players_submitted?
+        round.calculate_result if round.all_players_submitted?
+        
         round.save
+        render json: { success: true, location: view_round_path(game.room_code, round.round_number) } and return
+    end
 
-        render json: { success: true } and return
+    def view
+        @game = Game.find_by(room_code: params[:room_code])
+        render plain: 'Unable to locate a game with this room code' and return unless @game
+
+        @round = @game.game_rounds.find_by(round_number: params[:round_number]&.to_i)
+        render plain: "Round ##{params[:round_number]} does not exist for this game" and return unless @round
+    end
+
+    def check_result
+        game = Game.find_by(room_code: params[:room_code])
+        render json: { success: false, message: 'Unable to locate a game with this room code' } and return unless game
+
+        round = game.game_rounds.find_by(round_number: params[:round_number]&.to_i)
+        render json: { success: false, message: "This game does not have a round with round number = #{params[:round_number]}"} and return unless round
+
+        results_ready = !!round.result
+        render json: { success: true, results_ready: } and return
     end
 end

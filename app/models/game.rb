@@ -32,10 +32,13 @@ class Game < ApplicationRecord
     def start! 
         thief, defender = single_player ? [players.first, nil].shuffle : players.shuffle
 
-        round = game_rounds.create!({
+        round = game_rounds.new({
             thief:,
             defender:,
             round_number: 1,
         })
+
+        round.setup_round
+        round.save!
     end
 end

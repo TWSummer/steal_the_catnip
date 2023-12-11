@@ -1,0 +1,70 @@
+.ui.container 
+    %h1.ui.centered.dividing.header= @round.result ? (@round.catnip_stolen ? 'The catnip was stolen!' : 'The catnip is safe!') : 'Waiting for other player'
+    .ui.grid
+        .eight.wide.column
+            %h3.ui.dividing.header Thieves
+            .ui.three.stackable.cards
+                - @round.chosen_thief_cats.each do |cat|
+                    .ui.raised.card
+                        .content 
+                            .header= cat.name
+                            .description= cat.ability
+        .eight.wide.column
+            %h3.ui.dividing.header Defenders
+            .ui.three.stackable.cards
+                - @round.chosen_defender_cats.each do |cat|
+                    .ui.raised.card
+                        .content 
+                            .header= cat.name
+                            .description= cat.ability
+        .six.wide.column
+            .ui.items 
+                .item 
+                    .content
+                        .header Thieves Plan
+                        .description
+                            %p= @round.thief_plan
+        .four.wide.column
+            .ui.cards
+                .ui.raised.card
+                    .content 
+                        .header= @round.location.name
+                        .description= @round.location.description
+        .six.wide.column
+            .ui.items 
+                .item 
+                    .content
+                        .header Defenders Plan
+                        .description
+                            %p= @round.defender_plan
+        - if @round.result
+            .sixteen.wide.column
+                .ui.segment
+                    %h3.ui.centered.header Result
+                    .description
+                        %p= @round.result
+            .sixteen.wide.column
+                .ui.fluid.button Next Round
+
+:javascript
+
+    setTimeout(checkIfResultAvailable, 3000)
+
+    function checkIfResultAvailable() {
+        if("#{@round.result}") {
+            return
+        } else {
+             $.ajax({
+                method: 'GET',
+                url: "#{check_for_round_result_path(@game.room_code, @round.round_number)}",
+                success: function(response) {
+                    console.log(response);
+                    if(response.success && response.result_ready) {
+                        window.location.reload();
+                    } else {
+                        setTimeout(checkIfResultAvailable, 3000);
+                    }
+                }
+            });
+        }
+    }

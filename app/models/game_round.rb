@@ -7,8 +7,6 @@ class GameRound < ApplicationRecord
     has_many :round_cats
     has_many :cats, through: :round_cats
 
-    after_initialize :setup_round
-
     def cats_available_to_player(player)
         cats.where(side: player_role(player))
     end
@@ -55,18 +53,18 @@ class GameRound < ApplicationRecord
     end
 
     def calculate_result
-        outcome = Judge.determine_outcome(self)
+        outcome = JSON.parse(Judge.determine_outcome(self))
 
         self.catnip_stolen = outcome['stolen']
         self.result = outcome['outcome_description']
     end
 
-    private
-
     def setup_round
         draw_cats
         choose_location
     end
+
+    private
 
     def draw_cats
         num_cats = 6 # Change to game.num_cats when this is added as a game attribute
