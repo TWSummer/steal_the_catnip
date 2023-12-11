@@ -61,3 +61,31 @@ defender_cats.each do |cat_info|
     cat = Cat.find_or_initialize_by(name: cat_info[:name])
     cat.update(side: 'defend', ability: cat_info[:ability])
 end
+
+locations = [
+    { name: 'The Grand Greenhouse', description: 'Lush and full of exotic plants, the catnip is hidden in a secret compartment beneath a rare orchid.' },
+    { name: 'Mystic Museum', description: 'An ancient museum with relics and artifacts. The catnip is tucked inside an Egyptian sarcophagus.' },
+    { name: 'Moonlit Mansion', description: 'A sprawling estate with many rooms. The catnip is locked in a safe behind a painting in the study.' },
+    { name: 'High-Tech Tower', description: 'A modern skyscraper with advanced security. The catnip is in a biometrically-secured vault on the top floor.' },
+    { name: 'Seaside Shack', description: 'A quaint cabin by the beach. The catnip is buried under the floorboards, near a fireplace.' },
+    { name: 'Enchanted Library', description: 'A vast library with magical books. The catnip is hidden in a hollow book on a secret shelf.' },
+    { name: 'Royal Castle', description: 'A medieval castle with towers and dungeons. The catnip is inside the royal treasury, guarded by knights.' },
+    { name: 'Secret Subway', description: 'An abandoned underground station. The catnip is in an old train carriage, under a rusty seat.' },
+    { name: 'Pirate Shipwreck', description: 'Sunken and forgotten at sea. The catnip is in a waterproof chest in the captain\'s cabin.' },
+    { name: 'Spooky Cemetery', description: 'An eerie graveyard with fog and crypts. The catnip is inside a mausoleum, beneath a marble statue.' },
+    { name: 'Circus Tent', description: 'Colorful and bustling with activity. The catnip is stashed in a locked trunk under the acrobats\' net.' },
+    { name: 'Mountain Cabin', description: 'Nestled in snowy peaks. The catnip is hidden in a wall cavity, accessible only from outside.' },
+    { name: 'Underwater Aquarium', description: 'A large aquarium with exotic fish. The catnip is in a sealed container in the shipwreck exhibit.' },
+    { name: 'Zen Garden', description: 'Peaceful and serene with koi ponds. The catnip is buried in a small, unmarked grave under a cherry blossom tree.' },
+    { name: 'Old Opera House', description: 'Grand and slightly run-down. The catnip is in a prop box on the stage, behind heavy velvet curtains.' },
+    { name: 'Space Station', description: 'Orbiting Earth in space. The catnip is stored in a climate-controlled compartment in the research lab.' },
+    { name: 'Wild West Town', description: 'A dusty, abandoned town. The catnip is in a locked safe in the old bank, hidden behind a false wall.' },
+    { name: 'Rainforest Camp', description: 'Deep in the jungle. The catnip is in a camouflaged container suspended in a tall tree.' },
+    { name: 'Art Studio', description: 'Cluttered with paintings and sculptures. The catnip is inside a hollow sculpture in the center of the room.' },
+    { name: 'Vintage Train', description: 'A classic locomotive chugging through scenic landscapes. The catnip is in a briefcase under a seat in the luxury carriage.' },
+]
+
+locations.each do |location|
+    location = Location.find_or_initialize_by(name: location[:name])
+    location.update(description: location[:description])
+end
