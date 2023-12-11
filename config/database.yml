@@ -85,6 +85,6 @@ test:
 #
 production:
   <<: *default
-  database: database_name
-  username: user_name
+  database: steal_the_catnip_production
+  username: <%= ENV["STEAL_THE_CATNIP_DATABASE_USERNAME"] %>
   password: <%= ENV["STEAL_THE_CATNIP_DATABASE_PASSWORD"] %>
