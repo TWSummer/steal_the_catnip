@@ -59,7 +59,7 @@
                 url: "#{check_for_round_result_path(@game.room_code, @round.round_number)}",
                 success: function(response) {
                     console.log(response);
-                    if(response.success && response.result_ready) {
+                    if(response.success && response.results_ready) {
                         window.location.reload();
                     } else {
                         setTimeout(checkIfResultAvailable, 3000);

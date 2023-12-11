@@ -85,7 +85,7 @@ locations = [
     { name: 'Vintage Train', description: 'A classic locomotive chugging through scenic landscapes. The catnip is in a briefcase under a seat in the luxury carriage.' },
 ]
 
-locations.each do |location|
-    location = Location.find_or_initialize_by(name: location[:name])
-    location.update(description: location[:description])
+locations.each do |location_info|
+    location = Location.find_or_initialize_by(name: location_info[:name])
+    location.update(description: location_info[:description])
 end
