@@ -36,7 +36,7 @@ end
 
 defender_cats = [
     { name: 'Sergeant Sniffer', ability: 'This cat has an exceptional sense of smell, able to detect even the faintest trace of intruders.' },
-    { name: 'Inspector Whiskers', ability: 'Equipped with a hypersensitive hearing ability, Sergeant Sniffer can detect the slightest sound of a trespasser.' },
+    { name: 'Inspector Whiskers', ability: 'Equipped with a hypersensitive hearing ability, Inspector Whiskers can detect the slightest sound of a trespasser.' },
     { name: 'Guardian Gaze', ability: 'With keen eyesight, Guardian Gaze can spot suspicious activities from great distances.' },
     { name: 'Detective Dash', ability: 'Known for incredible speed and reflexes, Detective Dash can quickly respond to any security breach.' },
     { name: 'Lieutenant Hobbes', ability: 'This cat can analyze and interpret patterns, predicting criminals\' next moves with high accuracy.' },
