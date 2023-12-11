@@ -20,13 +20,13 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: localhost
 
 development:
   <<: *default
   database: steal_the_catnip_development
   username: steal_the_catnip
   password: password
-  host: localhost
   port: 5432
 
   # The specified database role being used to connect to postgres.
@@ -85,6 +85,6 @@ test:
 #
 production:
   <<: *default
-  database: steal_the_catnip_production
-  username: steal_the_catnip
+  database: database_name
+  username: user_name
   password: <%= ENV["STEAL_THE_CATNIP_DATABASE_PASSWORD"] %>
