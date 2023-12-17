@@ -10,9 +10,15 @@
 .ui.container
     %h1.ui.centered.dividing.header= "#{@round.player_role(@player) == 'thief' ? 'Steal' : 'Defend'} The Catnip"
     .ui.cards
+        .ui.card 
+            .content
+                %h5.ui.header= "#{@player.name}: #{@game.score_for(@player)}"
         .ui.centered.card(style='max-width: 100px; overflow-x: hidden; margin-top: -2px; box-shadow: none; border: 1px solid #d4d4d5; border-top: 1px solid white;')
             .content
                 %h2.ui.centered.header#round-timer= @game.round_length
+        .ui.card
+            .content 
+                %h5.ui.header= "#{@opponent.name}: #{@game.score_for(@opponent)}"
     %form.ui.form(action="#{submit_plan_path(@game.room_code, @round.round_number)}")
         .field
             .ui.error.message

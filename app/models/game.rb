@@ -41,4 +41,9 @@ class Game < ApplicationRecord
         round.setup_round
         round.save!
     end
+
+    def score_for(player)
+        game_rounds.where(thief_player_id: player.id, catnip_stolen: true).count + 
+            game_rounds.where(defender_player_id: player.id, catnip_stolen: false).count
+    end
 end

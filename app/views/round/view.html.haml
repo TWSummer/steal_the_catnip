@@ -1,5 +1,13 @@
 .ui.container 
     %h1.ui.centered.dividing.header= @round.result ? (@round.catnip_stolen ? 'The catnip was stolen!' : 'The catnip is safe!') : 'Waiting for other player'
+    .ui.cards
+        .ui.card 
+            .content
+                %h5.ui.header= "#{@round.thief.name}: #{@game.score_for(@round.thief)}"
+        .ui.centered.card.hidden(style='box-shadow: none;')
+        .ui.card
+            .content 
+                %h5.ui.header= "#{@round.defender.name}: #{@game.score_for(@round.defender)}"
     .ui.grid
         .eight.wide.column
             %h3.ui.dividing.header Thieves

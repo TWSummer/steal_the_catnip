@@ -29,6 +29,10 @@ class GameRound < ApplicationRecord
         end
     end
 
+    def opponent_player(player)
+        (player_role(player) == 'thief') ? defender : thief
+    end
+
     def chosen_thief_cats
         cats.where('round_cats.side = ? AND round_cats.chosen = ?', 'thief', true)
     end

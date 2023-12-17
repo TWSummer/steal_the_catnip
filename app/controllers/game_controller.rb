@@ -49,6 +49,7 @@ class GameController < ApplicationController
         @player = current_user
         @game = Game.find_by(room_code: params[:room_code])
         @round = @game.current_round
+        @opponent = @round.opponent_player(@player)
         @location = @round.location
         @player_cats = @round.cats_available_to_player(@player)
     end
