@@ -30,6 +30,8 @@ class RoundController < ApplicationController
 
         @round = @game.game_rounds.find_by(round_number: params[:round_number]&.to_i)
         render plain: "Round ##{params[:round_number]} does not exist for this game" and return unless @round
+
+        @player = current_user
     end
 
     def check_result
@@ -41,5 +43,40 @@ class RoundController < ApplicationController
 
         results_ready = !!round.result
         render json: { success: true, results_ready: } and return
+    end
+
+    def next_round
+        game = Game.find_by(room_code: params[:room_code])
+        render json: { success: false, message: 'Unable to locate a game with this room code' } and return unless game
+
+        round = game.game_rounds.find_by(round_number: params[:round_number]&.to_i)
+        render json: { success: false, message: "This game does not have a round with round number = #{params[:round_number]}"} and return unless round
+
+        round.ready_for_next_round(current_user)
+        
+        if round.save
+            if round.all_players_ready_for_next_round?
+                game.start_new_round!
+                render json: { success: true, location: play_game_path(game.room_code) } and return
+            else
+                render json: { success: true } and return
+            end
+        else
+            render json: { success: false, errors: round.errors.full_messages } and return
+        end
+    end
+
+    def check_if_all_players_ready
+        game = Game.find_by(room_code: params[:room_code])
+        render json: { success: false, message: 'Unable to locate a game with this room code' } and return unless game
+
+        round = game.game_rounds.find_by(round_number: params[:round_number]&.to_i)
+        render json: { success: false, message: "This game does not have a round with round number = #{params[:round_number]}"} and return unless round
+
+        if round.all_players_ready_for_next_round?
+            render json: { success: true, location: play_game_path(game.room_code) } and return 
+        else
+            render json: { success: true }
+        end
     end
 end

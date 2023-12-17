@@ -52,21 +52,20 @@
                     .description
                         %p= @round.result
             .sixteen.wide.column
-                .ui.fluid.button Next Round
+                .ui.fluid.button#next-round-button(action="#{next_round_path(@game.room_code, @round.round_number)}"){ class: ('loading' if @round.player_is_ready?(@player))} Next Round
 
 :javascript
 
     setTimeout(checkIfResultAvailable, 3000)
 
     function checkIfResultAvailable() {
-        if("#{@round.result}") {
+        if ("#{@round.result}") {
             return
         } else {
              $.ajax({
                 method: 'GET',
                 url: "#{check_for_round_result_path(@game.room_code, @round.round_number)}",
                 success: function(response) {
-                    console.log(response);
                     if(response.success && response.results_ready) {
                         window.location.reload();
                     } else {
@@ -76,3 +75,50 @@
             });
         }
     }
+
+    $('#next-round-button').click(function(e) {
+        $button = $('#next-round-button');
+        if ($button.hasClass('loading')) {
+            return
+        }
+
+        $button.addClass('loading');
+        $.ajax({
+            method: 'POST',
+            url: $button.attr('action'),
+            success: function(response) {
+                if (response.success) {
+                    if(response.location) {
+                        window.location = response.location;
+                    } else {
+                        $button[0].innerHTML = 'Waiting for other player';
+                        $button[0].style = 'color: rgba(0,0,0,0.2) !important';
+                        setTimeout(checkIfNextRoundReady, 3000);
+                    }
+                }
+            }
+        });
+    });
+
+    function checkIfNextRoundReady() {
+        $button = $('#next-round-button');
+
+        $.ajax({
+            method: 'GET',
+            url: $button.attr('action'),
+            success: function(response) {
+                console.log(response);
+                if (response.success) {
+                    if(response.location) {
+                        window.location = response.location;
+                    } else {
+                        setTimeout(checkIfNextRoundReady, 3000);
+                    }
+                }
+            }
+        });
+    }
+
+- if @round.player_is_ready?(@player)
+    :javascript
+        setTimeout(checkIfNextRoundReady, 3000);

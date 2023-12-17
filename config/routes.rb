@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   post 'game/:room_code/round/:round_number', to: 'round#submit', as: 'submit_plan'
   get 'game/:room_code/round/:round_number', to: 'round#view', as: 'view_round'
   get 'game/:room_code/round/:round_number/check_result', to: 'round#check_result', as: 'check_for_round_result'
+  post 'game/:room_code/round/:round_number/next_round', to: 'round#next_round', as: 'next_round'
+  get 'game/:room_code/round/:round_number/next_round', to: 'round#check_if_all_players_ready'
 end

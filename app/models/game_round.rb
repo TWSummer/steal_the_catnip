@@ -33,6 +33,32 @@ class GameRound < ApplicationRecord
         (player_role(player) == 'thief') ? defender : thief
     end
 
+    def ready_for_next_round(player)
+        case player_role(player)
+        when 'thief'
+            self.thief_next_round = true
+        when 'defend'
+            self.defender_next_round = true
+        else
+            raise 'This player was not in the round'
+        end
+    end
+
+    def all_players_ready_for_next_round?
+        game.single_player ? (thief_next_round || defender_next_round) : (thief_next_round && defender_next_round)
+    end
+
+    def player_is_ready?(player)
+        case player_role(player)
+        when 'thief'
+            thief_next_round
+        when 'defend'
+            defender_next_round
+        else
+            false
+        end
+    end
+
     def chosen_thief_cats
         cats.where('round_cats.side = ? AND round_cats.chosen = ?', 'thief', true)
     end
