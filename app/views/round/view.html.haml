@@ -14,6 +14,8 @@
             .ui.three.stackable.cards
                 - @round.chosen_thief_cats.each do |cat|
                     .ui.raised.card
+                        .image 
+                            %img(src="#{image_url "cats/#{cat.image_name}"}")
                         .content 
                             .header= cat.name
                             .description= cat.ability
@@ -22,6 +24,8 @@
             .ui.three.stackable.cards
                 - @round.chosen_defender_cats.each do |cat|
                     .ui.raised.card
+                        .image 
+                            %img(src="#{image_url "cats/#{cat.image_name}"}")
                         .content 
                             .header= cat.name
                             .description= cat.ability
@@ -35,6 +39,8 @@
         .four.wide.column
             .ui.cards
                 .ui.raised.card
+                    .image 
+                        %img(src="#{image_url "locations/#{@round.location.image_name}"}")
                     .content 
                         .header= @round.location.name
                         .description= @round.location.description
