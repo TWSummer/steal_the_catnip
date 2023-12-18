@@ -35,7 +35,9 @@
                 %h3.ui.dividing.header Location
                 .ui.cards
                     .ui.card
-                        .content 
+                        .image
+                            %img(src="#{image_url "locations/#{@location.image_name}"}")
+                        .content
                             .header= @location.name
                             .description= @location.description
                 %br
